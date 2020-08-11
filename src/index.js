@@ -2,12 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import * as serviceWorker from './serviceWorker';
-import { reducer } from './store/reducer';
+import { reducer } from './store/reducers/results';
+import { count_reducer } from './store/reducers/count_reducer';
 import { Provider } from 'react-redux';
 
-const store = createStore(reducer);
+const rootReducer = combineReducers({
+  res: reducer,
+  count: count_reducer,
+});
+const store = createStore(rootReducer);
 
 ReactDOM.render(
   <React.StrictMode>
