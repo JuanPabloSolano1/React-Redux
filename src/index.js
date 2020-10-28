@@ -2,17 +2,30 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import * as serviceWorker from './serviceWorker';
 import { reducer } from './store/reducers/results';
 import { count_reducer } from './store/reducers/count_reducer';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
   res: reducer,
   count: count_reducer,
 });
-const store = createStore(rootReducer);
+
+const logger = (store) => {
+  return (next) => {
+    return (action) => {
+      console.log('[Middleware] dispatching', action);
+      const result = next(action);
+      console.log('[Middleware next state', store.getState());
+      return result;
+    };
+  };
+};
+
+const store = createStore(rootReducer, applyMiddleware(logger, thunk));
 
 ReactDOM.render(
   <React.StrictMode>
