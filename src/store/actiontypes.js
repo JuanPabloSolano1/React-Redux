@@ -40,7 +40,7 @@ export const save_result = (result) => {
 
 export const store_result = (result) => {
   return (dispatch) => {
-    setInterval(() => {
+    setTimeout(() => {
       dispatch(save_result(result));
     }, 2000);
   };
